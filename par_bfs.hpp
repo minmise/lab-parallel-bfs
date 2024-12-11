@@ -3,6 +3,6 @@
 
 #include <vector>
 
-void par_bfs(const std::vector<std::vector<int>> &graph, std::vector<int> &ans);
+void par_bfs(const std::vector<std::vector<int>> &graph, std::vector<int> &dist);
 
 #endif

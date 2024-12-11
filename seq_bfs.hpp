@@ -3,6 +3,6 @@
 
 #include <vector>
 
-void seq_bfs(const std::vector<std::vector<int>> &graph, std::vector<int> &ans);
+void seq_bfs(const std::vector<std::vector<int>> &graph, std::vector<int> &dist);
 
 #endif
