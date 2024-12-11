@@ -5,6 +5,7 @@
 
 #include "par_bfs.hpp"
 #include "seq_bfs.hpp"
+#include "test_generator.hpp"
 
 bool test_dist_is_correct(const std::vector<int> &dist, const std::vector<int> &dist_expected) {
     for (int i = 0; i < dist_expected.size(); ++i) {
@@ -13,11 +14,6 @@ bool test_dist_is_correct(const std::vector<int> &dist, const std::vector<int> &
         }
     }
     return true;
-}
-
-void add_edge(std::vector<std::vector<int>> &graph, int v1, int v2) {
-    graph[v1].emplace_back(v2);
-    graph[v2].emplace_back(v1);
 }
 
 void test_bfses(const std::vector<std::vector<int>> &graph, const std::vector<int> &dist_expected) {
@@ -78,6 +74,15 @@ void test_disconnected() {
     test_bfses(graph, dist_expected);
 }
 
+void test_cube() {
+    int size_base = 100;
+    int dimensions = 3;
+    std::vector<std::vector<int>> graph;
+    std::vector<int> dist_expected;
+    gen_hypercube_graph_with_dist(size_base, dimensions, graph, dist_expected);
+    test_bfses(graph, dist_expected);
+}
+
 int main() {
     test_empty();
     test_one_vertex();
@@ -85,6 +90,7 @@ int main() {
     test_bamboo();
     test_hedgehog();
     test_disconnected();
+    test_cube();
     std::cout << "Correct!\n";
     return 0;    
 }
