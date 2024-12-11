@@ -42,6 +42,7 @@ int main() {
             add_edge(graph, i, i + cur_diff);
         }
     }
+    std::cout << "start\n";
     for (int i = 0; i < t; ++i) {
         int value_seq = test_time_seq(graph);
         int value_par = test_time_par(graph);
