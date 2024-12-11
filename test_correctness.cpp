@@ -30,6 +30,12 @@ void test_bfses(const std::vector<std::vector<int>> &graph, const std::vector<in
 }
 
 void test_empty() {
+    std::vector<std::vector<int>> graph;
+    std::vector<int> dist_expected;
+    test_bfses(graph, dist_expected);    
+}
+
+void test_one_vertex() {
     std::vector<std::vector<int>> graph(1);
     std::vector<int> dist_expected{0};
     test_bfses(graph, dist_expected);
@@ -73,6 +79,7 @@ void test_disconnected() {
 
 int main() {
     test_empty();
+    test_one_vertex();
     test_one_edge();
     test_bamboo();
     test_hedgehog();
