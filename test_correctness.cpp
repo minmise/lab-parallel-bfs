@@ -10,6 +10,7 @@
 bool test_dist_is_correct(const std::vector<int> &dist, const std::vector<int> &dist_expected) {
     for (int i = 0; i < dist_expected.size(); ++i) {
         if (dist[i] != dist_expected[i]) {
+            std::cout << i << ": dist == " << dist[i] << "; exp_dist = " << dist_expected[i] << "\n";
             return false;
         }
     }
