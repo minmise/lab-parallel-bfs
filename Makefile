@@ -9,3 +9,9 @@ time_compile:
 
 time_run:
 	PARLAY_NUM_THREADS=4 ./time.out
+
+full_cycle:
+	make correctness_compile
+	make correctness_run
+	make time_compile
+	make time_run

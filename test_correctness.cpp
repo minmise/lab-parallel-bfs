@@ -89,9 +89,9 @@ int main() {
     test_one_vertex();
     test_one_edge();
     test_bamboo();
-    /*test_hedgehog();
+    test_hedgehog();
     test_disconnected();
-    test_cube();*/
+    test_cube();
     std::cout << "Correct!\n";
     return 0;    
 }

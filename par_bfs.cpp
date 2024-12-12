@@ -20,31 +20,33 @@ static void bfs(const std::vector<std::vector<int>> &graph, std::vector<int> &di
     });
     parlay::sequence<int> cur_frontier{0};
     parlay::sequence<int> next_frontier;
+    parlay::sequence<int> degs_pref;
     while (!cur_frontier.empty()) {
         int frontier_size = cur_frontier.size();
-        parlay::sequence<int> degs_pref = parlay::tabulate(frontier_size, [&](int i) {
-            return static_cast<int>(graph[i].size());
+        degs_pref = parlay::tabulate(frontier_size, [&](int i) {
+            return static_cast<int>(graph[cur_frontier[i]].size());
         });
         if (degs_pref.empty()) {
             break;
         }
-        parlay::scan_inclusive_inplace(degs_pref);
-        next_frontier.resize(degs_pref.back(), -1);
-        parlay::parallel_for(0, cur_frontier.size(), [&](int v_ind) {
+        parlay::scan_inplace(degs_pref);
+        next_frontier.resize(degs_pref.back() + static_cast<int>(graph[cur_frontier.back()].size()), -1);
+        parlay::parallel_for(0, frontier_size, [&](int v_ind) {
             int v = cur_frontier[v_ind];
             parlay::parallel_for(0, graph[v].size(), [&](int u_ind) {
                 int u = graph[v][u_ind];
                 int value = 0;
                 if (used[u].compare_exchange_strong(value, 1)) {
                     dist[u] = dist[v] + 1;
-                    next_frontier[(v_ind == 0 ? 0 : degs_pref[v_ind - 1]) + u_ind] = u;
+                    next_frontier[degs_pref[v_ind] + u_ind] = u;
                 }
-            });
+            }, 10);
         });
         cur_frontier = parlay::filter(next_frontier, [](int val) {
             return val >= 0;
         });
         next_frontier.clear();
+        degs_pref.clear();
     }
 }
 
