@@ -38,6 +38,11 @@ int main() {
         sum_par += value_par;
         std::cout << "launch " << i + 1 << " seq time: " << value_seq << " ms; par time: " << value_par << " ms\n";
     }
-    std::cout << "seq average time: " << sum_seq / t << " ms; par average time: " << sum_par / t << " ms\n";
+    int average_time_seq = sum_seq / t;
+    int average_time_par = sum_par / t;
+    std::cout << "seq average time: " << average_time_seq << " ms; par average time: " << average_time_par << " ms\n";
+    std::cout << "par is " << static_cast<double>(average_time_seq) / static_cast<double>(average_time_par)
+    << " times better than seq\n";
+
     return 0;
 }

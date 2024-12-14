@@ -23,9 +23,6 @@ static void bfs(const std::vector<std::vector<int>> &graph, std::vector<int> &di
     parlay::sequence<int> degs_pref;
     while (!cur_frontier.empty()) {
         int frontier_size = cur_frontier.size();
-        /*degs_pref = parlay::tabulate(frontier_size, [&](int i) {
-            return static_cast<int>(graph[cur_frontier[i]].size());
-        });*/
         degs_pref.resize(frontier_size);
         parlay::parallel_for(0, frontier_size, [&](int i) {
             degs_pref[i] = graph[cur_frontier[i]].size();
@@ -38,7 +35,6 @@ static void bfs(const std::vector<std::vector<int>> &graph, std::vector<int> &di
         next_frontier.resize(degs_pref.back() + static_cast<int>(graph[cur_frontier.back()].size()), -1);
         parlay::parallel_for(0, frontier_size, [&](int v_ind) {
             int v = cur_frontier[v_ind];
-            //parlay::parallel_for(0, graph[v].size(), [&](int u_ind) {
             for (int u_ind = 0; u_ind < graph[v].size(); ++u_ind) {
                 int u = graph[v][u_ind];
                 int value = 0;
@@ -47,7 +43,6 @@ static void bfs(const std::vector<std::vector<int>> &graph, std::vector<int> &di
                     next_frontier[degs_pref[v_ind] + u_ind] = u;
                 }
             }
-            //}, 8);
         });
         cur_frontier = parlay::filter(next_frontier, [](int val) {
             return val >= 0;
